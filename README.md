@@ -7,10 +7,14 @@ Présentation beamer de la partie "Introduction à linux" du cours [Outils de pr
 
 Pour obtenir le fichier pdf, il suffit de compiler le fichier main.tex ou lancer la recette 
 
-'''sh
+```sh
 make pdf
-'''
-
+```
+Pour consulter le help, lancer la commande
+```sh
+make help
+```
+La commande "make" donne le même résultat. 
 ## Comment contribuer 
 
 - Ajouter un environnement d'affichage pour les commandes shell
