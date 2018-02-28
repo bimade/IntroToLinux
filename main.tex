@@ -9,9 +9,48 @@
 
 \usepackage{pgfplots}
 \usepgfplotslibrary{dateplot}
-
 \usepackage{xspace}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings,skins}
+%\lstset{basicstyle=\ttfamily\color{white},
+%  showstringspaces=false,
+%  xleftmargin = 0.5cm,
+%  commentstyle=\color{red},
+%  keywordstyle=\color{blue},
+%  rulecolor=\color{white},
+%  frameshape={RYR}{Y}{Y}{RYR},
+%  backgroundcolor=\color{black},
+%}
+\lstdefinestyle{mystyle}{
+     basicstyle=\ttfamily\color{white},
+     language=bash,
+     tabsize=1,
+     keywordstyle=\color{blue}\bf,
+     showstringspaces=false,
+     morekeywords={mount, umount, ls, 
+	 		cat, adduser, chown, chgrp, init, fuser}
+ }
+\newtcblisting{mylisting}{
+      enhanced,                             %%% needed for shadow
+      arc=2mm,
+      top=0mm,
+      bottom=0mm,
+      left=0mm,
+      right=0mm,
+      boxrule=0pt,
+      colback=black,
+      %shadow={5mm}{-3mm}{0mm}{fill=black!50!white,opacity=0.5},             %%% here for shadow  and adjust as you like
+      listing only,
+      listing options={style=mystyle},
+      hbox
+}
+
 \newcommand{\linux}{\textbf{\textsc{Linux}}\xspace}
+\newcommand{\param}[1]{\textcolor{blue}{#1}}
+
 \addtobeamertemplate{section page}{}{
   \centering
   \begin{minipage}{22em}
@@ -221,7 +260,7 @@ fichiers sont regroupés dans des répertoires (concept utilisé par la plupart 
 
 \begin{frame}{Les systèmes de fichiers sous Linux}
 
-\linux possède son système appelé ext2 (ext3 et ext4 sont aussi disponibles) mais peut en gérer d'autres. La liste en est donnée dans /proc/filesystems.
+\linux possède son système appelé \alert{ext2} (\alert{ext3} et \alert{ext4} sont aussi disponibles) mais peut en gérer d'autres. La liste en est donnée dans /proc/filesystems.
 
 L'utilisateur peut donc accéder sous Linux à d'autres systèmes de fichiers, comme DOS, Vfat,..provenant d'un périphérique ou importé par le réseau.
 
@@ -233,7 +272,7 @@ soient leur emplacement physique doivent être intégrés dans l'UNIQUE arboresc
 Cette arborescence peut donc être construite (et évoluer) à partir de diverses partitions qui   peuvent être situées sur plusieurs disques. Cela réalise une intégration et une abstraction plus poussée que dans le monde Windows où les partitions et lecteurs auxquels sont affectées les lettres A: C: D: ... demeurent des entités séparées. Naturellement la partition sur laquelle est situé le répertoire racine joue un rôle particulier.
 
 Le processus de montage, avec sa commande \alert{mount}, décrite plus loin, est le moyen de faire correspondre parties de l'arborescence et partitions physiques de disque. Il permet de plus d'affecter tout système extérieur (disquette, cdrom,
-clef usb, rép. réseau ...) à un répertoire créé pour cela dans l'arborescence.
+clef usb, rép. réseau \ldots) à un répertoire créé pour cela dans l'arborescence.
 
 Il suffira ensuite de se déplacer à ce répertoire, appelé point de montage, en fait un répertoire "d'accrochage", pour accéder à ses fichiers (bien sûr, conformément aux permissions que possède l'utilisateur)
 \end{frame}
@@ -255,8 +294,7 @@ catégories
 
 \begin{alertblock}{fichiers liens symboliques}
 Ce sont des fichiers qui ne contiennent qu'une référence (un pointeur) à un autre fichier.
-Cela   permet   d'utiliser   un   même   fichier   sous   plusieurs   noms   sans   avoir   à   le
-dupliquer sur le disque.
+Cela permet d'utiliser un même fichier sous plusieurs noms sans avoir à le dupliquer sur le disque.
 \end{alertblock}
 \end{frame}
 
@@ -286,7 +324,7 @@ indispensables dans / :
 \begin{itemize}
 \item \alert{/bin}: Contient les programmes systèmes importants.
 \item \alert{/boot}: Les fichiers utiles au démarrage du système
-\item \alert{/dev}: Contient   des   fichiers   factices   permettant   de   communiquer   avec
+\item \alert{/dev}: Contient des fichiers \texttt{factices} permettant de communiquer avec
 vospériphériques.
 \item \alert{/etc}: Ici se trouve la plupart des fichiers de configuration du système.
 \item \alert{/home}: Contient les dossiers personnels des utilisateurs. Chacun y possède un dossier à son nom avec ses fichiers personnels.
@@ -331,15 +369,14 @@ dans \texttt{/var/log/} .
 \begin{alertblock}{Montage et démontage sous Unix}
 Lorsque les données sont accessibles à partir d'un point de montage, on dit que la
 partition ou le périphérique  sont montés. Dans les sytèmes Unix, le point de
-montage   par   défaut   est   \texttt{/mnt}   ou   \texttt{/media}.   Par   exemple,   une   disquette   sera
-généralement montée en \texttt{/mnt/fd0} et un cdrom en \texttt{/mnt/cdrom} ou \texttt{/media/cdrom}.
+montage par défaut est \texttt{/mnt} ou \texttt{/media}. Par exemple, une disquette sera généralement montée en \texttt{/mnt/fd0} et un cdrom en \texttt{/mnt/cdrom} ou \texttt{/media/cdrom}.
 Le point de montage par défaut des périphériques est spécifié dans un fichier de
-configuration   système   :   \texttt{/etc/fstab}   (sous   Linux,   \texttt{/etc/vfstab}   sous   Solaris).   La commande Unix permettant de monter des répertoires est \alert{mount}. La commande
+configuration système: \texttt{/etc/fstab} (sous Linux, \texttt{/etc/vfstab}   sous   Solaris).   La commande Unix permettant de monter des répertoires est \alert{mount}. La commande
 inverse, qui démonte, est \alert{umount} (et non unmount).
 \end{alertblock}
 \end{frame}
 
-\begin{frame}{Monter et démonter}
+\begin{frame}[fragile]{Monter et démonter}
 La commande \alert{mount} permet de relier une partition ou un périphérique à un répertoire,   répertoire   par   lequel   les   données   présentes   sur   la   partition   ou   le
 périphérique sont accessibles.
 
@@ -348,7 +385,9 @@ indiquer : le type du système de fichiers par l'option \texttt{-t} le fichier s
 le répertoire de montage. Par exemple, la commande ci-dessous monte le périphérique \texttt{/dev/cdrom} (cédérom) sur \texttt{/media/cdrom} en indiquant que le système
 de fichier est ISO 9660.
 
- \alert{mount -t iso9660 /dev/cdrom /media/cdrom}
+\begin{mylisting}
+$ mount -t iso9660 /dev/cdrom /media/cdrom
+\end{mylisting}
 
 \end{frame}
 
@@ -370,12 +409,15 @@ On peut également sous les Unix modernes monter des fichiers qui constituent un
 Les commandes \alert{dd} et \alert{mkisofs} peuvent aider à fabriquer de tels fichiers. Il est possible, sous certaines configurations, de monter (recouvrement total ou partiel) par dessus d'autres systèmes déjà montés
 \end{frame}
 
-\begin{frame}{Démontage}
+\begin{frame}[fragile]{Démontage}
 Pour  démonter  une  partition  ou un  périphérique,  il faut  utiliser  la commande
 \alert{umount}. 
 Par exemple :
  
-\# \alert{umount /media/cdrom} 
+\begin{mylisting}
+$ sudo umount /media/cdrom
+\end{mylisting}
+
 \pause
 
 Le démontage ne marche que si la partition n'est pas utilisée, à savoir :
