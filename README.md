@@ -17,9 +17,12 @@ make help
 La commande "make" donne le même résultat. 
 ## Comment contribuer 
 
-- Ajouter un environnement d'affichage pour les commandes shell
-- Faire des graphiques et des diagrammes 
+- Faire des graphiques et des diagrammes
+- Ajouter bibliographie
 - Ajouter des feed-back
+
+## En cours 
+- Ajouter environnement shell ( Imad )
 
 ## Theme beamer
 
