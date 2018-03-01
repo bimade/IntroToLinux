@@ -11,3 +11,6 @@ pdf: main.tex ## build pdf output from the main file
 	mv main.pdf intro_linux.pdf
 clean: ## clean all build files
 	@rm -f *.aux *.bak *.log *.out *.toc *.gz *.fls *.fdb_latexmk *.dvi *.nav *.snm *.vrb
+
+show: ## show pdf
+	evince intro_linux.pdf
