@@ -428,8 +428,10 @@ Le démontage ne marche que si la partition n'est pas utilisée, à savoir :
 \pause
 Si le démontage est refusé, on peut utiliser la commande fuser pour savoir quels
 processus l'utilisent. Par exemple (si le démontage de \texttt{/media/cdrom} est refusé) :
-
-\# \alert{fuser /media/cdrom} 
+\begin{mylisting}
+ fuser /media/cdrom 
+\end{mylisting}
+\pause
 
 Lorsque le démontage a eu lieu, le fichier \texttt{/etc/mtab} est mis à jour
 \end{frame}
@@ -489,8 +491,13 @@ Il existe deux manières de présenter les droits; parmi elles, la représentati
 Pour chaque catégories d'utilisateurs (\alert{u}/\alert{g}/\alert{o}), on peut définir les droits (=), en ajouter ($+$), ou en enlever ($-$). 
 \end{frame}
 
-\begin{frame}{Accorder les droits}
-Ainsi, la formule "\texttt{\alert{chmod} u=rwx,g+rw,o-r fichier}" donne :
+\begin{frame}[fragile]{Accorder les droits}
+Ainsi, la commande
+\begin{mylisting}
+$ chmod u=rwx,g+rw,o-r fichier
+\end{mylisting}
+ 
+ donne :
 \pause
 \begin{itemize}
 \item Au propriétaire les droits de lecture, d'écriture, et d'exécution
@@ -513,13 +520,17 @@ attribue ensuite aux différentes catégories d'utilisateurs en les mettant bout
 dans l'ordre habituel (propriétaire, groupe, autres).
 \end{frame}
 
-\begin{frame}{Accorder les droits}
-Ainsi la commande "\alert{chmod} $765$ fichier" mettra donc en place les droits suivant :
+\begin{frame}[fragile]{Accorder les droits}
+Ainsi la commande 
+\begin{mylisting}
+\$ chmod 765 fichier
+\end{mylisting}
+mettra donc en place les droits suivant :
 \pause
 \begin{itemize}
-\item Lecture, écriture, exécution pour le propriétaire (car 7=4+2+1).
-\item Lecture et écriture au groupe (car 6=4+2).
-\item Et lecture et exécution aux autres (car 5=4+1).
+\item Lecture, écriture, exécution pour le propriétaire (car $7=4+2+1$).
+\item Lecture et écriture au groupe (car $6=4+2$).
+\item Et lecture et exécution aux autres (car $5=4+1$).
 \end{itemize}
 \end{frame}
 
@@ -528,7 +539,7 @@ Ainsi la commande "\alert{chmod} $765$ fichier" mettra donc en place les droits 
 Le run level, ou niveau de fonctionnement, est une fonction utilisée par le système
 d'init – système V – notamment lors du démarrage de votre système.
 
-Il existe différents run levels, qui correspondent chacun à un ensemble d’applications et de services à mettre en marche et à arrêter. Ainsi, quand le système est démarré, il passe par le run level 1 puis par le run level 2, et il est possible de configurer les applications et démon qui seront lancés ou arrêtés à ce moment.
+Il existe différents run levels, qui correspondent chacun à un ensemble d’applications et de services à mettre en marche et à arrêter. Ainsi, quand le système est démarré, il passe par le run level $1$ puis par le run level $2$, et il est possible de configurer les applications et démon qui seront lancés ou arrêtés à ce moment.
 \end{definition}
 \end{frame}
 
@@ -577,8 +588,13 @@ d'un numéro de deux chiffres.
 Par exemple, la commande : \texttt{sudo \alert{init} $3$} implique le passage passage courant (niveau $5$) au niveau $3$. Cela s'intreprète par les actions suivantes :
 \end{frame}
 
-\begin{frame}{Les scripts systèmes}
-Par exemple, la commande : \texttt{sudo \alert{init} $3$} implique le passage du niveau courant (niveau $5$) au niveau $3$. Cela s'intreprète par les actions suivantes :
+\begin{frame}[fragile]{Les scripts systèmes}
+Par exemple, la commande : 
+\begin{mylisting}
+$ sudo init 3 
+\end{mylisting}
+
+implique le passage du niveau courant (niveau $5$) au niveau $3$. Cela s'intreprète par les actions suivantes :
 \begin{itemize}
 	\item Les scripts dont le nom commence par un \alert{K} situés dans le dossier correspondant au niveau de fonctionnement courant – ici $5$ – sont lancés dans l'ordre décroissant des numéros avec le paramètre \texttt{\alert{stop}}, ce qui anormalement pour effet d'arrêter le service correspondant
 	\item Les scripts du nouveau niveau – ici $3$ – qui commencent par \alert{S} sont activés dans l'ordre croissant des numéros avec le paramètre \texttt{\alert{start}}.
